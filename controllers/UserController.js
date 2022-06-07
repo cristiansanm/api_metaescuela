@@ -1,4 +1,4 @@
-const User = require("../models/User.js")
+const {User} = require("../models")
 
 /** CRUD ACTIONS FOR USER */
 
@@ -8,19 +8,17 @@ const User = require("../models/User.js")
  * @param {*} req 
  * @param {*} res 
  */
-exports.registerUser = async (req, res) => {
-    try {
-        const user = await User.create(req.body)
+exports.registerUser = (req, res) => {
+    
+    User.create(req.body)
+    .then(user => {
         res.status(201).json({
             message: "User created successfully",
-            user: user
+            user: req.body
+            
         })
-    }catch(err) {
-        res.status(500).json({
-            message: "Error creating user",
-            error: err
-        })
-    }
+    }).
+    catch(err => { console.log(err)}) 
 }
 
 //Login a user
@@ -105,7 +103,7 @@ exports.deleteProfilePhoto = async (req, res) => {
 /** 
  * Get simplified user info
 */
- exports.getMiniInfo = async (req, res) => {
+exports.getMiniInfo = async (req, res) => {
     try {
         const user = await User.findOne({
             where: {

@@ -1,7 +1,4 @@
-const Order = require("../models/Order.js");
-const Product = require("../models/Product.js");
-const User = require("../models/User.js");
-
+const {Order, Product, User} = require("../models");
 /** CRUD ACTIONS FOR ORDER */
 
 /** 

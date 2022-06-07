@@ -1,4 +1,5 @@
 'use strict';
+const zlib = require('zlib');
 const {
   Model
 } = require('sequelize');
