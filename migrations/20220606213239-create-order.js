@@ -16,14 +16,20 @@ module.exports = {
         references: {model: 'users', key: 'id', as: 'buyer_id_fk'},
         onDelete: 'CASCADE',
       },
-      created_at: {
+      order_created_at: {
+        type: Sequelize.DATE,
         allowNull: false,
-        type: Sequelize.DATE
-      },
-      updated_at: {
-        allowNull: false,
-        type: Sequelize.DATE
+        defaultValue: Sequelize.NOW
       }
+      // ,
+      // created_at: {
+      //   allowNull: false,
+      //   type: Sequelize.DATE
+      // },
+      // updated_at: {
+      //   allowNull: false,
+      //   type: Sequelize.DATE
+      // }
     });
   },
   async down(queryInterface) {

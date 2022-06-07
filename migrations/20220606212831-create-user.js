@@ -45,15 +45,16 @@ module.exports = {
       },
       user_profile_image: {
         type: Sequelize.STRING
-      },
-      created_at: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updated_at: {
-        allowNull: false,
-        type: Sequelize.DATE
       }
+      // ,
+      // created_at: {
+      //   allowNull: false,
+      //   type: Sequelize.DATE
+      // },
+      // updated_at: {
+      //   allowNull: false,
+      //   type: Sequelize.DATE
+      // }
     });
   },
   async down(queryInterface) {

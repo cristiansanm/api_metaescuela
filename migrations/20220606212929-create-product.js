@@ -10,11 +10,13 @@ module.exports = {
       },
       product_name: {
         type: Sequelize.STRING
-      },
-      created_at: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
+      }
+      // ,
+      // created_at: {
+      //   allowNull: false,
+      //   type: Sequelize.DATE
+      // }
+      ,
       product_name: { 
         type: Sequelize.STRING(40),
         allowNull: false,
@@ -46,11 +48,12 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: {model: 'subcategories', key: 'id', as: 'subcategory_id_fk'},
         onDelete: 'CASCADE'
-      },
-      updated_at: {
-        allowNull: false,
-        type: Sequelize.DATE
       }
+      // ,
+      // updated_at: {
+      //   allowNull: false,
+      //   type: Sequelize.DATE
+      // }
     });
   },
   async down(queryInterface) {
