@@ -21,18 +21,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Order.init({
-    order_description: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    order_finlized_at: DataTypes.DATE,
     order_total: {
       type:DataTypes.INTEGER,
       allowNull: false,
-    },
-    order_status: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
     },
     buyer_id_fk: {
       type: DataTypes.INTEGER,

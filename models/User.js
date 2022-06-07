@@ -21,7 +21,16 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   User.init({
-    ser_lastname: { 
+    user_name: { 
+      type: DataTypes.STRING,
+      allowNull: false, 
+      validate: {
+          isAlpha: {
+              msg: "Only letters are allowed"
+          }
+      }
+    },
+    user_lastname: { 
       type: DataTypes.STRING,
       allowNull: false, 
       validate: {
