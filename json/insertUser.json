@@ -1,0 +1,28 @@
+{
+    "arrayUsuarios": [{
+        "user_name": "andrea",
+        "user_lastname": "gonzalez",
+        "user_email": "andrea@gmail.com",  
+        "user_password": "12345678",
+        "user_phone": "078989898" ,
+        "user_grade": "primero_eso",
+        "user_is_seller": true,
+        "user_is_buyer": true,
+        "user_profile_image": null
+    }],
+    "arrayEmails": [{
+        "user_email": "andrea@gmail.com"
+    }],
+    "arrayEditarUser": [{
+        "userId":6,
+        "user_name": "angel",
+        "user_lastname": "gonzalez",
+        "user_email": "angel@gmail.com",  
+        "user_password": "12345678",
+        "user_phone": "078989898" ,
+        "user_grade": "primero_eso",
+        "user_is_seller": true,
+        "user_is_buyer": true,
+        "user_profile_image": null
+    }]   
+}

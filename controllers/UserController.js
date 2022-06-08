@@ -1,11 +1,10 @@
 const {User} = require("../models")
 
 
-/** CRUD ACTIONS FOR USER */
-
-//Register a user 
 /**
- * METHOD: POST
+ * funcion de registrar un usuario
+ * ruta: POST /user/registerUser
+ * introducir datos del json
  * @param {*} req 
  * @param {*} res 
  */
@@ -16,15 +15,18 @@ exports.registerUser = (req, res) => {
         res.status(201).json({
             message: "User created successfully",
             user: req.body
-            
         })
     }).
     catch(err => { console.log(err)}) 
 }
 
-//Login a user
+
 /** 
- * METHOD: POST
+ * funcion para logearte por medio del email
+ * ruta: POST /user/loginUser
+ * hay que introducir de momento solo el email por medio de un json
+ * @param {*} req
+ * @param {*} res
 */
 exports.loginUser = async (req, res) => {
     try {
@@ -42,27 +44,30 @@ exports.loginUser = async (req, res) => {
     }
 }
 
-//Edit user info 
+
 /**
- * MEHTOD: PUT
+ * funcion que se le pasa por un json el usuario a editar y tambien los campos a editar
+ * ruta: PUT /user/editUser
+ * en el json a de ir primero 
  * @param {*} req 
  * @param {*} res 
  */
-exports.editUser = async (req, res) => {
-    try {
-        await User.update(req.body, {
+exports.editUser =(req, res) => {
+    User.update(req.body, {
             where: {
                 id: req.body.userId
             }
-        })
+        }).then(_user => {
         res.status(200).json({message: "User updated successfully"})
-    }catch(err) {
+    }).catch(err => {   
         res.status(500).json({
             message: "Error updating user",
             error: err
         })
-    }
+    })
 }
+
+
 //Convert to seller
 exports.convertToSeller = async (req, res) => {
     try {
