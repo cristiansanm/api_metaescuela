@@ -5,8 +5,8 @@ const { Op } = require("sequelize");
 
 /**
  * funcion que extrae todos los productos, descartando los del usuario que haga la busqueda
- * ruta: post /api/product/getAll
- * le pasamos un json con el id del usuario
+ * ruta: post /product/getAll
+ * le pasamos un json con el id del usuario->"userId":10
  * @param {*} req 
  * @param {*} res 
  */
@@ -31,7 +31,7 @@ exports.getAllProducts = (req, res) => {
 
 /**
  * funcion que muestra todos los productos que coincidan con el filtro de la categoria de producto y el rango de precios
- * ruta: post /api/product/getByFilter
+ * ruta: post /product/getByFilter
  * le pasamos un json con el id del usuario y una query por la ruta como este ejemplo:
  * getByFilter?subcategory=5&min=5&max=150
  * @param {*} req 
@@ -64,7 +64,7 @@ exports.getByFilter = async (req, res) => {
 
 /**
  * funcion de busqueda de un producto por su id
- * ruta: get /api/product/getOne/:id
+ * ruta: get /product/getOne/:id
  * @param {*} req 
  * @param {*} res 
  */
@@ -88,7 +88,7 @@ exports.getOneProduct =(req, res) => {
 
 /**
  * funcion de crear un producto
- * ruta: post /api/product/createProduct
+ * ruta: post /product/createProduct
  * en el json se meteraan todos los datos relacionados con el producto
  * @param {*} req 
  * @param {*} res 
@@ -107,7 +107,7 @@ exports.createProduct = async (req, res) => {
 
 /**
  * funcion de editar un producto, le pasamos el json con los datos que queremos cambiar
- * ruta: post /api/product/editProduct/:id
+ * ruta: post /product/editProduct/:id
  * en el json se introduciran todos los datos del producto que queremos cambiar
  * @param {*} req 
  * @param {*} res 

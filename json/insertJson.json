@@ -20,5 +20,16 @@
     "product_image": "",
     "subcategory_id_fk": 5,
     "seller_id_fk": 7
+  },
+    {
+    
+    "product_name": "libro hhistoria del arte",
+    "product_stock": 1,
+    "product_description": "libro de historia del arte de 1 de bachillerato",
+    "product_price": 20,
+    "product_availability": true,
+    "product_image": "",
+    "subcategory_id_fk": 5,
+    "seller_id_fk": 7
   }
 ]
