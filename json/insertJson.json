@@ -1,9 +1,9 @@
 [
   {
-    "product_description": "libro de historia de 1 de bachillerato",
-    "id": 5,
-    "product_name": "libro historia",
+    
+    "product_name": "libro de estadistica",
     "product_stock": 1,
+    "product_description": "libro de estadistica de 1 de bachillerato",
     "product_price": 100,
     "product_availability": true,
     "product_image": "",
@@ -11,10 +11,10 @@
     "seller_id_fk": 1
   },
   {
-    "product_description": "libro de quimica de 1 de bachillerato",
-    "id": 7,
+    
     "product_name": "libro quimica",
     "product_stock": 1,
+    "product_description": "libro de quimica de 1 de bachillerato",
     "product_price": 20,
     "product_availability": true,
     "product_image": "",

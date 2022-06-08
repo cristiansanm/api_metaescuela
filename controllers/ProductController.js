@@ -2,32 +2,15 @@ const {Product, User} = require('../models');
 const { Op } = require("sequelize");
 
 
-/** CRUD ACTIONS FOR PRODUCTS */
 
-//Get all products 
 /**
- * Function to get every prodyct while the user ID is not equal tu buyer Id 
- * (avoiding user autobuy their own products) 
- * method: post
- * */
-// exports.getAllProducts = async (req, res) => {
-//     try{
-//         const products = await Product.findAll({
-//             where: {
-//                 seller_id_fk: {
-//                     [Op.ne]: req.body.userId
-//                 },
-//             }
-//         });
-//         res.status(200).json(products);
-//     }catch(err){
-//         res.status(500).json({
-//             message: "Error getting all products",
-//             error: err
-//         })
-//     }
-// }
-//*funciona
+ * funcion que extrae todos los productos, descartando los del usuario que haga la busqueda
+ * ruta: post /api/product/getAll
+ * le pasamos un json con el id del usuario
+ * @param {*} req 
+ * @param {*} res 
+ */
+
 exports.getAllProducts = (req, res) => {
     Product.findAll({
         where: {
@@ -45,10 +28,12 @@ exports.getAllProducts = (req, res) => {
     }).catch(err => {console.log(err)})
 }
 
-//Get by filter *funciona
+
 /**
- * Function to get an array with products filtered by custom parameters
- * METHOD: POST
+ * funcion que muestra todos los productos que coincidan con el filtro de la categoria de producto y el rango de precios
+ * ruta: post /api/product/getByFilter
+ * le pasamos un json con el id del usuario y una query por la ruta como este ejemplo:
+ * getByFilter?subcategory=5&min=5&max=150
  * @param {*} req 
  * @param {*} res 
  */
@@ -77,33 +62,18 @@ exports.getByFilter = async (req, res) => {
     }
 }
 
-//Get by id
 /**
- * Function to get one product by its ID
- * METHOD: GET
+ * funcion de busqueda de un producto por su id
+ * ruta: get /api/product/getOne/:id
  * @param {*} req 
  * @param {*} res 
  */
-// exports.getOneProduct = async (req, res) => {
-//     try{
-//         const product = await Product.findByPk(req.query.id);
-//         (product === null) ? 
-//             res.status(404).json({message: "No product found"}):
-//             res.status(200).json(product);
-//     }catch(err){
-//         res.status(500).json({
-//             message: "Error getting product by id",
-//             error: err
-//         })
-//     }
-// }
-//*funciona
 exports.getOneProduct =(req, res) => {
         Product.findByPk(req.params.id
             , {
             include: {
                 model: User,
-                attributes: [ 'user_name']
+                attributes: [ 'user_name','user_lastname']
             }
         }
         ).then((result) => {
@@ -115,10 +85,11 @@ exports.getOneProduct =(req, res) => {
     }
 
 
-//Create a product *funciona
+
 /**
- * Function for create a product, it should recive the same parameters as the model
- * METHOD: POST
+ * funcion de crear un producto
+ * ruta: post /api/product/createProduct
+ * en el json se meteraan todos los datos relacionados con el producto
  * @param {*} req 
  * @param {*} res 
  */
@@ -135,15 +106,16 @@ exports.createProduct = async (req, res) => {
 }
 
 /**
- * Edit product
- * METHOD: PUT
+ * funcion de editar un producto, le pasamos el json con los datos que queremos cambiar
+ * ruta: post /api/product/editProduct/:id
+ * en el json se introduciran todos los datos del producto que queremos cambiar
  * @param {*} req 
  * @param {*} res 
  */
 
 exports.editProduct = async (req, res) => {
     try{
-        const product = await Product.findByPk(req.query.id);
+        const product = await Product.findByPk(req.params.id);
         (product === null) ? 
             res.status(404).json({message: "No product found"}):
             await product.update(req.body);

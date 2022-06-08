@@ -7,6 +7,6 @@ router.post("/getAll", ProductController.getAllProducts);
 router.post("/getByFilter", ProductController.getByFilter);
 router.get("/getOne/:id", ProductController.getOneProduct);
 router.post("/createProduct", ProductController.createProduct);
-router.post("/editProduct", ProductController.editProduct);
+router.post("/editProduct/:id", ProductController.editProduct);
 
 module.exports = router;
