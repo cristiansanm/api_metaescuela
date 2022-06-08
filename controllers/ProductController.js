@@ -1,4 +1,4 @@
-const {Product} = require('../models');
+const {Product, User} = require('../models');
 const { Op } = require("sequelize");
 
 
@@ -27,13 +27,17 @@ const { Op } = require("sequelize");
 //         })
 //     }
 // }
-
+// *funciona
 exports.getAllProducts = (req, res) => {
     Product.findAll({
         where: {
             seller_id_fk: {
-                [Op.eq]: req.body.userId
+                [Op.ne]: req.body.userId
             }
+        },
+        include: {
+            model: User,
+            attributes: [ 'user_name']
         }
 
     }).then((result) => {
@@ -41,7 +45,7 @@ exports.getAllProducts = (req, res) => {
     }).catch(err => {console.log(err)})
 }
 
-//Get by filter
+//Get by filter *funciona
 /**
  * Function to get an array with products filtered by custom parameters
  * METHOD: POST
@@ -54,10 +58,10 @@ exports.getByFilter = async (req, res) => {
         const products = await Product.findAll({
             where: {
                 subcategory_id_fk: subcategory,
-                buyer_id_fk: {
+                seller_id_fk: {
                     [Op.ne]: req.body.userId
                 },
-                price: {
+                product_price: {
                 [Op.between]: [min, max]
                 }
             }
@@ -94,7 +98,7 @@ exports.getOneProduct = async (req, res) => {
     }
 }
 
-//Create a product
+//Create a product *funciona
 /**
  * Function for create a product, it should recive the same parameters as the model
  * METHOD: POST
