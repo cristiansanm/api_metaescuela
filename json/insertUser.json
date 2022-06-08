@@ -24,5 +24,13 @@
         "user_is_seller": true,
         "user_is_buyer": true,
         "user_profile_image": null
-    }]   
+    }],
+    "EditarVendedor": [{
+        "userId":6,
+        "user_is_seller": true
+    }],
+    "EditarPhoto": [{
+        "userId":6,
+        "user_profile_image": null
+    }]
 }

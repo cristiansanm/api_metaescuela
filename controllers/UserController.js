@@ -68,7 +68,13 @@ exports.editUser =(req, res) => {
 }
 
 
-//Convert to seller
+/**
+ * funcion que te convierte en vendedor al usuario 
+ * ruta: PUT /user/convertToSeller
+ * se ke paso un el userid y el paramatro de user_is_seller
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.convertToSeller = async (req, res) => {
     try {
         await User.update(req.body, {
@@ -85,29 +91,38 @@ exports.convertToSeller = async (req, res) => {
     }
 }
 
-//Delete profile photo
+
 /**
- * METHOD: PUT
+ * funcion de eliminar la photo de perfil
+ * ruta: PUT /user/deletPhoto
+ * se le pasa un userId y un parametro de user_profile_image
  * @param {*} req 
  * @param {*} res 
  */
 exports.deleteProfilePhoto = async (req, res) => {
-    try {
-        await User.update(req.body, {
-            where: {
-                id: req.body.userId
-            }
-        })
-    }catch(err) {
+    User.update(req.body, {
+        where: {
+            id: req.body.userId
+        }
+    }).then(_user => {
+        res.status(200).json({ message: "User profile photo updated successfully" })
+    }).catch(err => {
         res.status(500).json({
             message: "Error deleting profile photo",
             error: err
         })
-    }
+    })
 }
 
+
+
 /** 
- * Get simplified user info
+ * 
+ * funcion que te devuelve un json con los datos del usuario simmplificados
+ * ruta: POST /user/getMiniInfo
+ * se le pasa un userId en un json 
+ * @param {*} req
+ * @param {*} res
 */
 exports.getMiniInfo = async (req, res) => {
     try {
