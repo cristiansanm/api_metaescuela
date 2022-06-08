@@ -45,8 +45,14 @@ exports.createOrder = (req, res) => {
     });
 }
 
-//Show all orders created by buyer
-//Method: POST
+
+/**
+ * lafuncion consiste en la busqueda de de la ordenes de un usuario 
+ * ruta:post /order/getAll
+ * el usuario se pasa por medio de un json
+ * @param {*} req
+ *  @param {*} res
+ */
 
 exports.getAllOrders = (req, res) => {
     
@@ -61,20 +67,25 @@ exports.getAllOrders = (req, res) => {
     })
 }
 
-//Show one order
-//Method: GET
 
+
+
+/**
+ * lafuncion consiste en la busqueda de una orden en especifico
+ * ruta:post /order/getOneOrder/:id
+ * 
+ * @param {*} req
+ *  @param {*} res
+ */
 exports.getOneOrder = (req, res) => {
     Order.findOne({
         where: {
-            id: req.query.id
+            id: req.params.id
         },
         include: [{
             model: Product,
-            as: 'products',
-            through: {
-                attributes:[]
-            }
+            attributes: ['product_name', 'product_price', 'product_stock']
+        
         }]
     }).then(order => {
         res.status(200).json({message: "Order found", order: order})

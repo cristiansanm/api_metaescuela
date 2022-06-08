@@ -2,12 +2,13 @@ const {Product, Order }= require("../models")
 
 
 /**
- * Function to get all products searching by seller ID
- * Method: POST
+ * Funccion que te trae todos los productos de un vendedor
+ * ruta:post /seller/getAllProducts
+ * se le pasa un json que solo contenga el id del usuario
  * @param {*} req 
  * @param {*} res 
  */
- exports.getProductsForSeller = async (req, res) => {
+exports.getProductsForSeller = async (req, res) => {
     try{
         const products = await Product.findAll({
             where: {
@@ -27,7 +28,7 @@ const {Product, Order }= require("../models")
 
 /**
  * Getting sold products by seller ID, besides show the buyer info
- * Method: POST
+ * ruta:post /seller/getSoldProducts
  * @param {*} req 
  * @param {*} res 
  */
