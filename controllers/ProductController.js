@@ -27,7 +27,7 @@ const { Op } = require("sequelize");
 //         })
 //     }
 // }
-// *funciona
+//*funciona
 exports.getAllProducts = (req, res) => {
     Product.findAll({
         where: {
@@ -84,19 +84,36 @@ exports.getByFilter = async (req, res) => {
  * @param {*} req 
  * @param {*} res 
  */
-exports.getOneProduct = async (req, res) => {
-    try{
-        const product = await Product.findByPk(req.query.id);
-        (product === null) ? 
-            res.status(404).json({message: "No product found"}):
-            res.status(200).json(product);
-    }catch(err){
-        res.status(500).json({
-            message: "Error getting product by id",
-            error: err
-        })
+// exports.getOneProduct = async (req, res) => {
+//     try{
+//         const product = await Product.findByPk(req.query.id);
+//         (product === null) ? 
+//             res.status(404).json({message: "No product found"}):
+//             res.status(200).json(product);
+//     }catch(err){
+//         res.status(500).json({
+//             message: "Error getting product by id",
+//             error: err
+//         })
+//     }
+// }
+//*funciona
+exports.getOneProduct =(req, res) => {
+        Product.findByPk(req.params.id
+            , {
+            include: {
+                model: User,
+                attributes: [ 'user_name']
+            }
+        }
+        ).then((result) => {
+            
+
+            res.status(200).json(result);
+
+        }).catch(err => {console.log(err)})
     }
-}
+
 
 //Create a product *funciona
 /**

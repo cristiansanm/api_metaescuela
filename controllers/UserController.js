@@ -12,7 +12,7 @@ const {User} = require("../models")
 exports.registerUser = (req, res) => {
     
     User.create(req.body)
-    .then(user => {
+    .then(_user => {
         res.status(201).json({
             message: "User created successfully",
             user: req.body

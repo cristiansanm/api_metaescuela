@@ -15,3 +15,6 @@ users
 products
 
 errores si los prductos son subidos por los sedder, ya que tiene un compresor de texto preferible utilizar thunderclient para la insercion de datos 
+
+
+para buscar productos sugun un filtro seria de sta forma: getByFilter?subcategory=5&min=5&max=150
