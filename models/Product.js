@@ -1,4 +1,5 @@
 'use strict';
+const zlib = require('zlib');
 const {
   Model
 } = require('sequelize');
@@ -45,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       get(){
           const value = this.getDataValue('product_description');
           const uncompressed = zlib.inflateSync(Buffer.from(value, 'base64'));
+          //const uncompressed = zlib.inflateSync;
           return uncompressed.toString();
       }
     },

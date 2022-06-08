@@ -1,5 +1,6 @@
 const {User} = require("../models")
 
+
 /** CRUD ACTIONS FOR USER */
 
 //Register a user 

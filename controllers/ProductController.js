@@ -1,6 +1,7 @@
 const {Product} = require('../models');
 const { Op } = require("sequelize");
 
+
 /** CRUD ACTIONS FOR PRODUCTS */
 
 //Get all products 
@@ -9,22 +10,35 @@ const { Op } = require("sequelize");
  * (avoiding user autobuy their own products) 
  * method: post
  * */
-exports.getAllProducts = async (req, res) => {
-    try{
-        const products = await Product.findAll({
-            where: {
-                buyer_id_fk: {
-                    [Op.ne]: req.body.userId
-                },
+// exports.getAllProducts = async (req, res) => {
+//     try{
+//         const products = await Product.findAll({
+//             where: {
+//                 seller_id_fk: {
+//                     [Op.ne]: req.body.userId
+//                 },
+//             }
+//         });
+//         res.status(200).json(products);
+//     }catch(err){
+//         res.status(500).json({
+//             message: "Error getting all products",
+//             error: err
+//         })
+//     }
+// }
+
+exports.getAllProducts = (req, res) => {
+    Product.findAll({
+        where: {
+            seller_id_fk: {
+                [Op.eq]: req.body.userId
             }
-        });
-        res.status(200).json(products);
-    }catch(err){
-        res.status(500).json({
-            message: "Error getting all products",
-            error: err
-        })
-    }
+        }
+
+    }).then((result) => {
+        res.status(200).json(result);
+    }).catch(err => {console.log(err)})
 }
 
 //Get by filter

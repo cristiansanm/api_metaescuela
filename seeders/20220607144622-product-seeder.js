@@ -12,24 +12,24 @@ module.exports = {
      * }], {});
     */
     await queryInterface.bulkInsert('products', [{
-      product_name: 'libro de lengua',
-      product_stock: 1,
-      product_description: 'primero eso',
-      product_price: 100,
-      product_availability: true,
-      product_image: '',
-      subcategory_id_fk: 1,
-      seller_id_fk: 1,
-    },
-    {
-      product_name: 'libro matematicas',
-      product_stock: 1,
-      product_description: 'Product 1 description',
-      product_price: 100,
-      product_availability: true,
-      product_image: '',
-      subcategory_id_fk: 1,
-      seller_id_fk: 1,
+    //   product_name: 'libro de lengua',
+    //   product_stock: 1,
+    //   product_description: 'primero eso',
+    //   product_price: 100,
+    //   product_availability: true,
+    //   product_image: '',
+    //   subcategory_id_fk: 1,
+    //   seller_id_fk: 1,
+    // },
+    // {
+    //   product_name: 'libro matematicas',
+    //   product_stock: 1,
+    //   product_description: 'Product 1 description',
+    //   product_price: 100,
+    //   product_availability: true,
+    //   product_image: '',
+    //   subcategory_id_fk: 1,
+    //   seller_id_fk: 1,
     }], {
 
     })
