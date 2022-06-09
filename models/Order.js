@@ -31,19 +31,20 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {model: 'users', key: 'id', as: 'buyer_id_fk'},
       onDelete: 'CASCADE',
-    }, 
-    order_created_at: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW
     }
+    // , 
+    // order_created_at: {
+    //   type: DataTypes.DATE,
+    //   allowNull: false,
+    //   defaultValue: DataTypes.NOW
+    // }
 
   }, {
     sequelize,
     modelName: 'Order',
     underscored:true,
     tableName: 'orders',
-    timestamps: false
+    timestamps: true
   });
   return Order;
 };

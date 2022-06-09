@@ -1,0 +1,19 @@
+
+    {
+        "buyer_id_fk": "6",
+        "order_total": "100",
+        "products":[
+            {
+                "product_id": "10",
+                "product_quantity": "1"
+            },
+            {
+                "product_id": "11",
+                "product_quantity": "1"
+            },
+            {
+                "product_id": "12",
+                "product_quantity": "1"
+            }
+        ]
+    }

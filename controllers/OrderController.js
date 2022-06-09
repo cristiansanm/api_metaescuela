@@ -1,4 +1,4 @@
-const {Order, Product, User} = require("../models");
+const {Order, Product, User, OrdersProducts} = require("../models");
 /** CRUD ACTIONS FOR ORDER */
 
 /** 
@@ -6,36 +6,76 @@ const {Order, Product, User} = require("../models");
  * Create an order
 */
 
+const orderExamples = {    //Example of a order
+    "buyer_id_fk": 6,
+    "order_total": 100,
+    "products": [
+        {
+            "product_id": 10,
+            "product_quantity": 1
+            },
+        {
+            "product_id": 11,
+            "product_quantity": 1
+            },
+        {
+            "product_id": 12,
+            "product_quantity": 1
+            }
+    ]
+}
+
 exports.createOrder = (req, res) => {
-    //Try to create an order
-    Order.create(req.body.order)
+    //intenta crearuna orden
+    const { buyer_id_fk, order_total,products } = req.body;
+    Order.create({ buyer_id_fk, order_total })
     .then(order => {
-        //obtain all the products from cart
-        const getProducts = req.body.products;
+        //obtiene todos los productos del carrito
+        const getProducts = products;
         getProducts.forEach(product => {
-            //search if the product already exist
+            //busca si el producto existe
             Product.findOne(
                     {
-                        where: {id: product.id}
+                        where: {id: product.product_id}
                     }
-                ).then(product => {
-                    //ask for consistency of the seller and the buyer (not equal)
-                if(product.seller_id_fk === req.body.order.buyer_id_fk){
+                ).then(Oneproduct =>{
+                    //pregunta por la conssitentencia de si un vendedor se autocompre sus productos
+                if(Oneproduct.seller_id_fk === buyer_id_fk){
                     return res.status(401).json({message: "You can't buy your own product"})
-                }else{
-                    //add the product to the order
-                    order.setProduct(product)
-                    //update the quantity
-                    product.update({
-                        product_stock: product.stock - req.body.product.quantity
-                    }).then(() => {
-                        return res.status(200).json({message: "Order created successfully"})
-                    })
                 }
+                else{
+                    
+                    //agregar un producto a la orden 
+                    OrdersProducts.create({
+                        order_id_fk: order.id,
+                        product_id_fk: Oneproduct.id,
+                        product_quantity: product.product_quantity,
+                        product_subtotal: Oneproduct.product_price * product.product_quantity
+                    }).then(orderProduct => {
+                        if (Oneproduct.product_stock < product.product_quantity) {
+                            return res.status(401).json({message: "Not enough stock"})
+                        }else if(Oneproduct.product_stock === 0){
+                            return res.status(401).json({message: "Product out of stock"})
+                        }
+                        else{
+                        //actualizar la cantidad de productos
+                            console.log(Oneproduct.id, Oneproduct.product_stock - product.product_quantity )
+                            Oneproduct.update({
+                                product_stock: Oneproduct.product_stock - product.product_quantity
+                            }).then(() => {
+                                res.setHeader('Content-Type', 'application/json');
+                                return res.status(200).json({ message: "Order created successfully" })
+                            })
+                        }
+                    })
+
+                }
+            
             }).catch(err => {
                 return res.status(500).json({message: "Error finding the product", error: err})
             })
         });
+
     })
     .catch(err => {
     res.status(500).json({

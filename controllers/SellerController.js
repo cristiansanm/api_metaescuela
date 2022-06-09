@@ -13,7 +13,11 @@ exports.getProductsForSeller = async (req, res) => {
         const products = await Product.findAll({
             where: {
                 seller_id_fk: req.body.userId
-            },
+            }
+            ,
+            order: [
+                ['createdAt', 'DESC']
+            ]
         });
         (products.length === 0) ? 
             res.status(404).json({message: "No products found for seller"}):
