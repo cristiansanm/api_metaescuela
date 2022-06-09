@@ -20,6 +20,6 @@ app.use("/seller", SellerRoutes);
 app.listen({ port: 5000 }, async () => {
     console.log('Server up on http://localhost:5000')
     await sequelize.authenticate()
-    //await sequelize.sync({alter: true})
+    // await sequelize.sync({alter: true})
     console.log('Database Connected!')
 })

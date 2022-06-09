@@ -18,6 +18,9 @@ exports.getAllProducts = (req, res) => {
                 [Op.ne]: req.body.userId
             }
         },
+        order: [
+            ['createdAt','DESC']
+        ],
         include: {
             model: User,
             attributes: [ 'user_name']
