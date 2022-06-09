@@ -111,7 +111,7 @@ exports.getAllOrders = (req, res) => {
 
 
 /**
- * lafuncion consiste en la busqueda de una orden en especifico
+ * la funcion consiste en la busqueda de una orden en especifico
  * ruta:post /order/getOneOrder/:id
  * 
  * @param {*} req

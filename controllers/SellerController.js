@@ -1,5 +1,5 @@
 const {Product, Order }= require("../models")
-
+const { QueryTypes } = require('sequelize');
 
 /**
  * Funccion que te trae todos los productos de un vendedor
@@ -31,32 +31,25 @@ exports.getProductsForSeller = async (req, res) => {
 }
 
 /**
- * Getting sold products by seller ID, besides show the buyer info
+ * funncion que obtiene todos los productos publicados por un vendedor
  * ruta:post /seller/getSoldProducts
  * @param {*} req 
  * @param {*} res 
  */
 exports.getSoldProductsForSeller = async (req, res) => {
-    try{
-        const products = await Product.findAll({
+    Product.findAll({
             where: {
                 seller_id_fk: req.body.userId,
-                include:[{
-                    model: Order, 
-                    as: "orders",
-                    through: {
-                        attributes: []
-                    }
-                }]
-            }
-        });
-        (products.length === 0) ? 
-            res.status(404).json({message: "No sold products found for seller"}):
-            res.status(200).json(products);
-    }catch(err){
-        res.status(500).json({
-            message: "Error getting sold products for seller",
-            error: err
-        })
-    }
+                
+        }, include: {
+            model: Order,
+            attributes: ["buyer_id_fk"]
+
+        }
+    }).then((result) => {
+
+
+        res.status(200).json(result);
+    }   ).catch(err => {console.log(err)})
+
 }
