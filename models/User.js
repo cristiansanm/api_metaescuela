@@ -26,8 +26,12 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                isAlpha: {
-                    msg: "Only letters are allowed"
+
+                is: {
+                    args:
+                        /^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]+$/,
+                        msg:"Tiene que contener solo carácteres alfabéticos."
+
                 }
             }
         },
@@ -35,8 +39,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                isAlpha: {
-                    msg: "Only letters are allowed"
+                is: {
+                    args:
+                        /^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]+$/,
+                        msg:"Tiene que contener solo carácteres alfabéticos."
+
                 }
             }
         },

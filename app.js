@@ -12,7 +12,6 @@ app.use( cors() );
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
 app.use("/user", UserRoutes);
 app.use("/product", ProductRoutes);
 app.use("/order", OrderRoutes);
@@ -20,6 +19,6 @@ app.use("/seller", SellerRoutes);
 app.listen({ port: 5000 }, async () => {
     console.log('Server up on http://localhost:5000')
     await sequelize.authenticate()
-    // await sequelize.sync({alter: true})
+    //await sequelize.sync({alter: true})
     console.log('Database Connected!')
 })

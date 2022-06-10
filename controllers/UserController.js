@@ -1,6 +1,8 @@
 const {User} = require("../models")
-
-
+const jwt = require("jsonwebtoken")
+const bcrypt = require("bcrypt")
+const authConfig = require('../config/auth')
+const { TokenExpiredError } = require("jsonwebtoken")
 /**
  * funcion de registrar un usuario
  * ruta: POST /user/registerUser
@@ -12,11 +14,18 @@ exports.registerUser = (req, res) => {
     
     User.create(req.body)
     .then(_user => {
-        res.status(201).json({
+        let token = jwt.sign({user:_user},"secret",{
+            expiresIn:authConfig.expires
+        });
+    return res.status(201).json({ 
             message: "User created successfully",
-            user: req.body
-        })
+            user: req.body,
+            token: token
+        });
+        ///////////////
     }).
+    //////////////////
+
     catch(err => { console.log(err)}) 
 }
 
@@ -35,7 +44,24 @@ exports.loginUser = async (req, res) => {
                 user_email: req.body.user_email,
             }
         })
-        res.status(200).json({message: "User logged in successfully", user: user})
+        if (!user){
+            res.status(400).json({
+                msg:"Usuario no encontrado"
+            })
+        }else{
+            if (bcrypt.compareSync(req.body.user_password,user.user_password)){
+               /////////////////////////
+                let token = jwt.sign({user:user},authConfig.secret,{
+                    expiresIn:authConfig.expires
+                });
+                return res.json({ message:"Login Correcto", user:user,
+                    token:token
+                })
+                //////////////////////
+            }else{
+              return  res.status(400).json({message: "Contraseña incorrecta"})
+            }
+        }
     }catch(err) {
         res.status(500).json({
             message: "Error logging in user",
