@@ -1,30 +1,93 @@
 const {Order, Product, User, OrdersProducts} = require("../models");
+const { Op } = require("sequelize");
 /** CRUD ACTIONS FOR ORDER */
+
+
+
+
+/**
+ * Función para confirmar que el usuario existe
+ * @param {*} req 
+ * @param {*} res 
+ */
+const confirmBuyer = async(req, res) => {
+    try{ 
+        await User.findOne({
+            where: { id: req.body.buyer_id_fk } 
+        })
+        return true;
+    }catch(err){ 
+        console.log(err)
+        res.status(500).json({message: err})
+        return false;
+    }
+}
+/**
+ * Confirma si tiene stock determinado producto
+ */
+const hasStock = async (req, res, product) => {
+    try {
+        await Product.findOne({
+            where: {
+                id: product.product_id_fk,
+                product_stock:{
+                    [Op.and]:{
+                        [Op.eq]: 0,
+                        [Op.lte]: product.product_quantity 
+                    }
+                    
+                }
+            }
+        })
+        return true;
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: err})
+        return false;
+    }
+}
+/**
+ * Función para validar si el comprador no se autocompra su propìo producto 
+ */
+const sameSeller = (buyer_id_fk, product) => {
+    if(buyer_id_fk === product.seller_id_fk){
+        return false;
+    }
+    return true;
+}
+
+/**
+ * Funcion para actualizar la cantidad de productos según la cantidad solicitada
+ */
+const updateProductStock = async(req, res) => {
+    try{
+        const { product_id_fk, product_quantity } = req.body;
+        const product = await Product.findOne({
+            where: {
+                id: product_id_fk
+            }
+        })
+        await product.update({
+            product_stock: product.product_stock - product_quantity
+        })
+        return true;
+        
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: err})
+        return false;
+    }
+};
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 
 /** 
  * METHOD: POST
  * Create an order
 */
-
-const orderExamples = {    //Example of a order
-    "buyer_id_fk": 6,
-    "order_total": 100,
-    "products": [
-        {
-            "product_id": 10,
-            "product_quantity": 1
-            },
-        {
-            "product_id": 11,
-            "product_quantity": 1
-            },
-        {
-            "product_id": 12,
-            "product_quantity": 1
-            }
-    ]
-}
-
 exports.createOrder = (req, res) => {
     //intenta crearuna orden
     const { buyer_id_fk, order_total,products } = req.body;

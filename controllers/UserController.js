@@ -18,7 +18,7 @@ exports.registerUser = (req, res) => {
             expiresIn:authConfig.expires
         });
     return res.status(201).json({ 
-            message: "User created successfully",
+            message: "Usuario creado exitosamente",
             user: req.body,
             token: token
         });
@@ -26,7 +26,7 @@ exports.registerUser = (req, res) => {
     }).
     //////////////////
 
-    catch(err => { console.log(err)}) 
+    catch(err => { res.status(401).json(err)}) 
 }
 
 
@@ -103,10 +103,8 @@ exports.editUser =(req, res) => {
  */
 exports.convertToSeller = async (req, res) => {
     try {
-        await User.update(req.body, {
-            where: {
-                id: req.body.userId
-            }
+        await User.update({
+            user_is_seller: true,
         })
         res.status(200).json({message: "User converted to seller successfully"})
     }catch(err) {
@@ -116,8 +114,30 @@ exports.convertToSeller = async (req, res) => {
         })
     }
 }
-
-
+/**
+ * función para añadir foto de usuario
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.addProfilePhoto = async (req, res) => {
+    User.update({
+        user_profile_image: req.body.img,
+    },
+    {   
+        where: {
+            id: req.body.userId
+        }
+    }
+    )
+    .then(_user => {
+        res.status(200).json({ message: "Foto actualizada correctamente" })
+    }).catch(err => {
+        res.status(500).json({
+            message: "Error adding profile photo",
+            error: err
+        })
+    })
+}
 /**
  * funcion de eliminar la photo de perfil
  * ruta: PUT /user/deletPhoto
@@ -126,12 +146,14 @@ exports.convertToSeller = async (req, res) => {
  * @param {*} res 
  */
 exports.deleteProfilePhoto = async (req, res) => {
-    User.update(req.body, {
+    User.update({
+        user_profile_image: null,
+    },{
         where: {
             id: req.body.userId
         }
     }).then(_user => {
-        res.status(200).json({ message: "User profile photo updated successfully" })
+        res.status(200).json({ message: "Foto borrada correctamente" })
     }).catch(err => {
         res.status(500).json({
             message: "Error deleting profile photo",
@@ -175,4 +197,29 @@ exports.getMiniInfo = async (req, res) => {
         })
     }
 }
- 
+
+/**
+ * Funcion para obtener todos los datos del usuario
+ */
+exports.getOneUser = async(req, res) => {
+    try {
+        const user = await User.findOne({
+            where: {
+                id: req.body.userId
+            },
+            attributes: {
+                exclude: [
+                    "user_password",
+                    "created_at",
+                    "updated_at"
+                ]
+            },
+        })
+        res.status(200).json({message: "Usuario obtenido correctamente", user: user})
+    }catch(err) {
+        res.status(500).json({
+            message: "Error getting user info",
+            error: err
+        })
+    }
+}

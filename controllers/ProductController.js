@@ -43,6 +43,8 @@ exports.getAllProducts = (req, res) => {
 exports.getByFilter = async (req, res) => {
     try{
         let { subcategory, min, max } = req.query
+        let newMin = min ? min : 1;
+        let newMax = max ? max : 100000;
         const products = await Product.findAll({
             where: {
                 subcategory_id_fk: subcategory,
@@ -50,13 +52,16 @@ exports.getByFilter = async (req, res) => {
                     [Op.ne]: req.body.userId
                 },
                 product_price: {
-                [Op.between]: [min, max]
+                    [Op.between]: [newMin, newMax]
                 }
+            },
+            include: {
+                model: User,
+                attributes: [ 'user_name']
             }
         });
-        (products.length === 0) ?
-            res.status(404).json({message: "No products found"}):
-            res.status(200).json(products);
+       
+        res.status(200).json(products);
     }catch(err){
         res.status(500).json({
             message: "Error getting products by filter",

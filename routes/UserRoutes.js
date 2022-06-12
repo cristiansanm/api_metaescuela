@@ -9,5 +9,7 @@ router.put("/editUser", UserController.editUser);
 router.put("/convertToSeller", UserController.convertToSeller);
 router.put("/deletPhoto", UserController.deleteProfilePhoto);
 router.post("/getMiniInfo", UserController.getMiniInfo);
-
+router.post("/addProfilePhoto", UserController.addProfilePhoto);
+router.post("/deleteProfilePhoto", UserController.deleteProfilePhoto);
+router.post("/getOneUser", UserController.getOneUser);
 module.exports = router;
