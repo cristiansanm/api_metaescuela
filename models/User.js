@@ -101,6 +101,14 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: true,
         },
+        user_roles: {
+            type: DataTypes.VIRTUAL,
+            get() {
+                let isUser = this.getDataValue('user_is_buyer') ? "BUYER" : null;
+                let isSeller = this.getDataValue('user_is_seller') ? "SELLER" : null;
+                return [isUser, isSeller];
+            }
+        },
         user_profile_image: {
             type: DataTypes.STRING
         }

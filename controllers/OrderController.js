@@ -1,5 +1,6 @@
 const {Order, Product, User, OrdersProducts} = require("../models");
 const { Op } = require("sequelize");
+const { required } = require("nodemon/lib/config");
 /** CRUD ACTIONS FOR ORDER */
 
 
@@ -151,7 +152,7 @@ exports.createOrder = (req, res) => {
 
 /**
  * lafuncion consiste en la busqueda de de la ordenes de un usuario 
- * ruta:post /order/getAll
+ * ruta:post /order/getAllOrders
  * el usuario se pasa por medio de un json
  * @param {*} req
  *  @param {*} res
@@ -163,6 +164,12 @@ exports.getAllOrders = (req, res) => {
         where: {
             buyer_id_fk: req.body.userId
         },
+        include: [{
+            model: Product,
+            attributes: ['product_name', 'product_price', 'product_stock']
+        
+        },
+        ]
     }).then(orders => {
         res.status(200).json({message: "Orders found", orders: orders})
     }).catch(err => {
@@ -183,12 +190,16 @@ exports.getAllOrders = (req, res) => {
 exports.getOneOrder = (req, res) => {
     Order.findOne({
         where: {
-            id: req.params.id
+            id: req.params.id,
+            buyer_id_fk: req.body.userId
         },
         include: [{
             model: Product,
-            attributes: ['product_name', 'product_price', 'product_stock']
-        
+            attributes: ['product_name', 'product_price', 'product_stock', 'product_image', 'id'],
+            include: [{
+                model: User,
+                attributes: ['user_name', 'user_lastname', 'id']
+            }]
         }]
     }).then(order => {
         res.status(200).json({message: "Order found", order: order})

@@ -59,7 +59,7 @@ exports.loginUser = async (req, res) => {
                 })
                 //////////////////////
             }else{
-              return  res.status(400).json({message: "Contraseña incorrecta"})
+              return  res.status(403).json({message: "Contraseña incorrecta"})
             }
         }
     }catch(err) {
@@ -105,6 +105,10 @@ exports.convertToSeller = async (req, res) => {
     try {
         await User.update({
             user_is_seller: true,
+        },{
+            where: {
+                id: req.body.userId
+            }
         })
         res.status(200).json({message: "User converted to seller successfully"})
     }catch(err) {
