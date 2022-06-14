@@ -105,7 +105,8 @@ exports.createOrder = (req, res) => {
                 ).then(Oneproduct =>{
                     //pregunta por la conssitentencia de si un vendedor se autocompre sus productos
                 if(Oneproduct.seller_id_fk === buyer_id_fk){
-                    return res.status(401).json({message: "You can't buy your own product"})
+                    res.status(401).json({message: "You can't buy your own product"})
+                    return 
                 }
                 else{
                     
@@ -117,9 +118,11 @@ exports.createOrder = (req, res) => {
                         product_subtotal: Oneproduct.product_price * product.product_quantity
                     }).then(orderProduct => {
                         if (Oneproduct.product_stock < product.product_quantity) {
-                            return res.status(401).json({message: "Not enough stock"})
+                            res.status(401).json({message: "Not enough stock"})
+                            return
                         }else if(Oneproduct.product_stock === 0){
-                            return res.status(401).json({message: "Product out of stock"})
+                            res.status(401).json({message: "Product out of stock"})
+                            return
                         }
                         else{
                         //actualizar la cantidad de productos
@@ -127,19 +130,22 @@ exports.createOrder = (req, res) => {
                             Oneproduct.update({
                                 product_stock: Oneproduct.product_stock - product.product_quantity
                             }).then(() => {
-                                res.setHeader('Content-Type', 'application/json');
-                                return res.status(200).json({ message: "Order created successfully" })
+                                console.log("Producto actualizado")
                             })
                         }
+                    }).catch(err => {
+                        res.status(500).json({message: "Error creating order product", error: err})
+                        return
                     })
-
+                
                 }
-            
+                
             }).catch(err => {
-                return res.status(500).json({message: "Error finding the product", error: err})
+                res.status(500).json({message: "Error finding the product", error: err})
+                return
             })
         });
-
+        res.status(200).json({ message: "Order created successfully" })
     })
     .catch(err => {
     res.status(500).json({
@@ -169,6 +175,9 @@ exports.getAllOrders = (req, res) => {
             attributes: ['product_name', 'product_price', 'product_stock']
         
         },
+        ],
+        order: [
+            ['createdAt', 'DESC']
         ]
     }).then(orders => {
         res.status(200).json({message: "Orders found", orders: orders})

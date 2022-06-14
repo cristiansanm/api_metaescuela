@@ -46,7 +46,7 @@ exports.loginUser = async (req, res) => {
         })
         if (!user){
             res.status(400).json({
-                msg:"Usuario no encontrado"
+                message:"Usuario no encontrado"
             })
         }else{
             if (bcrypt.compareSync(req.body.user_password,user.user_password)){
@@ -96,7 +96,7 @@ exports.editUser =(req, res) => {
 
 /**
  * funcion que te convierte en vendedor al usuario 
- * ruta: PUT /user/convertToSeller
+ * ruta: POST /user/convertToSeller
  * se ke paso un el userid y el paramatro de user_is_seller
  * @param {*} req 
  * @param {*} res 
@@ -110,7 +110,17 @@ exports.convertToSeller = async (req, res) => {
                 id: req.body.userId
             }
         })
-        res.status(200).json({message: "User converted to seller successfully"})
+        const user = 
+            await User.findByPk(req.body.userId, 
+                {
+                    attributes:
+                    [
+                        "user_is_seller", 
+                        "user_is_buyer",
+                        "user_roles",
+                    ]
+            })
+        res.status(200).json({message: "User converted to seller successfully", user})
     }catch(err) {
         res.status(500).json({
             message: "Error converting to seller",
@@ -227,3 +237,4 @@ exports.getOneUser = async(req, res) => {
         })
     }
 }
+

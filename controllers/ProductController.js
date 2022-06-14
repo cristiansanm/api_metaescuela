@@ -115,7 +115,7 @@ exports.createProduct = async (req, res) => {
 
 /**
  * funcion de editar un producto, le pasamos el json con los datos que queremos cambiar
- * ruta: post /product/editProduct/:id
+ * ruta: post /product/editProduct
  * en el json se introduciran todos los datos del producto que queremos cambiar
  * @param {*} req 
  * @param {*} res 
@@ -123,11 +123,22 @@ exports.createProduct = async (req, res) => {
 
 exports.editProduct = async (req, res) => {
     try{
-        const product = await Product.findByPk(req.params.id);
-        (product === null) ? 
-            res.status(404).json({message: "No product found"}):
-            await product.update(req.body);
-        res.status(200).json({message: "Product updated correctly", product: product});
+        await Product.update(
+        {
+            product_name: req.body.product_name,
+            product_description: req.body.product_description,
+            product_price: req.body.product_price,
+            product_stock: req.body.product_stock,
+            subcategory_id_fk: req.body.subcategory_id_fk,
+            product_availability: req.body.product_availability,
+        }, 
+        {where: 
+            {
+                id: req.body.productId
+            }
+        })
+        res.status(201).json({message: "Product updated correctly"})
+    
     }catch(err){
         res.status(500).json({
             message: "Error updating product",

@@ -1,4 +1,4 @@
-const {Product, Order }= require("../models")
+const {Product, Order, User }= require("../models")
 const { QueryTypes } = require('sequelize');
 
 /**
@@ -13,8 +13,7 @@ exports.getProductsForSeller = async (req, res) => {
         const products = await Product.findAll({
             where: {
                 seller_id_fk: req.body.userId
-            }
-            ,
+            },
             order: [
                 ['createdAt', 'DESC']
             ]
@@ -41,13 +40,20 @@ exports.getSoldProductsForSeller = async (req, res) => {
             where: {
                 seller_id_fk: req.body.userId,
                 
-        }, include: {
+        }, include: [{
             model: Order,
-            attributes: ["buyer_id_fk"]
-
-        }
+            attributes: ["buyer_id_fk", "order_total", "id"],
+            include: [{
+                model: User,
+                attributes: ["user_name", "id"]
+            }]
+        }]
     }).then((result) => {
         res.status(200).json(result);
     }   ).catch(err => {console.log(err)})
 
 }
+
+/**
+ * Función para obtener las ganancias totales
+ */
